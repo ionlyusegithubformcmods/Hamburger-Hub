@@ -1,1 +1,617 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Hamburger Hub - A collection of FE scripts that are free to use.", "Serpent")
+local Tab = Window:NewTab("Home")
+local Section = Tab:NewSection("Made by Guy that exists#1915")
+Section:NewButton("Hats Needed", "Paste this in your browser for all of the hats.", function()
+    setclipboard("https://sites.google.com/view/hamburgerhubhats/home")
+toclipboard("https://sites.google.com/view/hamburgerhubhats/home")
+end)
+Section:NewKeybind("Keybind", "Lets you open/close the hub.", Enum.KeyCode.LeftAlt, function()
+	Library:ToggleUI()
+end)
+Section:NewButton("Nexo Animator", "Make your own FE scripts.", function()
+    loadstring(game:HttpGet(('https://raw.githubusercontent.com/XeneonPlays/Nexo/main/NexoAnimator'),true))()
+end)
+Section:NewButton("Netless", "Execute this before scripts if parts fall off.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+end)
+Section:NewButton("Block Hats", "Turns your hats into blocks.", function()
+    for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+    if v:IsA("Accessory") then
+        if v.Handle:FindFirstChildOfClass("Mesh") or v.Handle:FindFirstChildOfClass("SpecialMesh") then
+            if v.Handle:FindFirstChildOfClass("SpecialMesh") then
+                v.Handle:FindFirstChildOfClass("SpecialMesh"):Remove()
+            end
+        end
+    end
+end
+end)
+local Tab = Window:NewTab("Player")
+local Section = Tab:NewSection("Player")
+Section:NewSlider("Walkspeed", "Changes how fast you run.", 500, 16, function(s) -- 500 (MaxValue) | 16 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+end)
+Section:NewSlider("JumpPower", "Changes how high you jump.", 500, 50, function(s) -- 500 (MaxValue) | 50 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+end)
+Section:NewButton("Fly", "Press Q to enable/disable.", function()
+    repeat wait()
+  until game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:findFirstChild("Torso") and game.Players.LocalPlayer.Character:findFirstChild("Humanoid")
+local mouse = game.Players.LocalPlayer:GetMouse()
+repeat wait() until mouse
+local plr = game.Players.LocalPlayer
+local torso = plr.Character.Torso
+local flying = true
+local deb = true
+local ctrl = {f = 0, b = 0, l = 0, r = 0}
+local lastctrl = {f = 0, b = 0, l = 0, r = 0}
+local maxspeed = 50
+local speed = 0
 
+function Fly()
+local bg = Instance.new("BodyGyro", torso)
+bg.P = 9e4
+bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+bg.cframe = torso.CFrame
+local bv = Instance.new("BodyVelocity", torso)
+bv.velocity = Vector3.new(0,0.1,0)
+bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+repeat wait()
+plr.Character.Humanoid.PlatformStand = true
+if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
+speed = speed+.5+(speed/maxspeed)
+if speed > maxspeed then
+speed = maxspeed
+end
+elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
+speed = speed-1
+if speed < 0 then
+speed = 0
+end
+end
+if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
+bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
+elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
+bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+else
+bv.velocity = Vector3.new(0,0.1,0)
+end
+bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
+until not flying
+ctrl = {f = 0, b = 0, l = 0, r = 0}
+lastctrl = {f = 0, b = 0, l = 0, r = 0}
+speed = 0
+bg:Destroy()
+bv:Destroy()
+plr.Character.Humanoid.PlatformStand = false
+end
+mouse.KeyDown:connect(function(key)
+if key:lower() == "q" then
+if flying then flying = false
+else
+flying = true
+Fly()
+end
+elseif key:lower() == "w" then
+ctrl.f = 1
+elseif key:lower() == "s" then
+ctrl.b = -1
+elseif key:lower() == "a" then
+ctrl.l = -1
+elseif key:lower() == "d" then
+ctrl.r = 1
+end
+end)
+mouse.KeyUp:connect(function(key)
+if key:lower() == "w" then
+ctrl.f = 0
+elseif key:lower() == "s" then
+ctrl.b = 0
+elseif key:lower() == "a" then
+ctrl.l = 0
+elseif key:lower() == "d" then
+ctrl.r = 0
+end
+end)
+Fly()
+end)
+Section:NewButton("Click TP", "Hold ctrl then click to teleport.", function()
+    local player = game:GetService("Players").LocalPlayer
+local char = player.Character
+local mouse = player:GetMouse()
+local uis = game:GetService("UserInputService")
+
+local shifthold  = false
+
+mouse.Button1Down:Connect(function()
+    if shifthold then
+        char:MoveTo(mouse.Hit.p)
+    end
+end)
+
+uis.InputBegan:Connect(function(input, process)
+    if input.KeyCode == Enum.KeyCode.LeftControl or input.KeyCode == Enum.KeyCode.RightControl then
+        shifthold = true
+    end
+end)
+
+uis.InputEnded:Connect(function(input, process)
+    if input.KeyCode == Enum.KeyCode.LeftControl or input.KeyCode == Enum.KeyCode.RightControl then
+	shifthold = true
+    end
+end)
+end)
+
+Section:NewButton("Noclip", "Press E to enable/disable noclip.", function()
+	noclip = false
+game:GetService('RunService').Stepped:connect(function()
+if noclip then
+local noclip = true char = game.Players.LocalPlayer.Character while true do if noclip == true then for _,v in pairs(char:children()) do pcall(function() if v.className == "Part" then v.CanCollide = false elseif v.ClassName == "Model" then v.Head.CanCollide = false end end) end end game:service("RunService").Stepped:wait() end
+end
+end)
+plr = game.Players.LocalPlayer
+mouse = plr:GetMouse()
+mouse.KeyDown:connect(function(key)
+
+if key == "e" then
+noclip = not noclip
+local noclip = true char = game.Players.LocalPlayer.Character while true do if noclip == true then for _,v in pairs(char:children()) do pcall(function() if v.className == "Part" then v.CanCollide = true elseif v.ClassName == "Model" then v.Head.CanCollide = true end end) end end game:service("RunService").Stepped:wait() end
+end
+end)
+end)
+
+Section:NewButton("Invisibility", "Press R to enable/disable invisibility.", function()
+    local key = Enum.KeyCode.R -- key to toggle invisibility
+
+--// dont edit script below
+local invis_on = false
+function onKeyPress(inputObject, chat)
+    if chat then return end
+    if inputObject.KeyCode == key then
+	    invis_on = not invis_on
+    	if invis_on then
+            local savedpos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+            wait()
+            game.Players.LocalPlayer.Character:MoveTo(Vector3.new(-25.95, 84, 3537.55))
+            wait(.15)
+            local Seat = Instance.new('Seat', game.Workspace)
+            Seat.Anchored = false
+            Seat.CanCollide = false
+            Seat.Name = 'invischair'
+            Seat.Transparency = 1
+            Seat.Position = Vector3.new(-25.95, 84, 3537.55)
+            local Weld = Instance.new("Weld", Seat)
+            Weld.Part0 = Seat
+            Weld.Part1 = game.Players.LocalPlayer.Character:FindFirstChild("Torso") or game.Players.LocalPlayer.Character.UpperTorso
+            wait()
+            Seat.CFrame = savedpos
+            game.StarterGui:SetCore("SendNotification", {
+                Title = "Invis On";
+                Duration = 1;
+                Text = "";
+            })
+        else
+            workspace:FindFirstChild('invischair'):Remove()
+            game.StarterGui:SetCore("SendNotification", {
+                Title = "Invis Off";
+                Duration = 1;
+                Text = "";
+            })
+        end
+    end
+end
+
+game:GetService("UserInputService").InputBegan:connect(onKeyPress)
+end)
+
+Section:NewButton("Respawn", "Respawns you and tps you back to where you died.", function()
+game.Players.LocalPlayer.Character.Head:Destroy()
+if game.Players.LocalPlayer.Character.Humanoid.Health < 5 then 
+    local deathmanok = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").position
+    wait(1.5)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(deathmanok)
+end
+end)
+Section:NewButton("Rejoin", "Rejoins the server you are in.", function()
+    local ts = game:GetService("TeleportService")
+local p = game:GetService("Players").LocalPlayer
+ts:Teleport(game.PlaceId, p)
+end)
+local Tab = Window:NewTab("Normal")
+local Section = Tab:NewSection("Normal")
+Section:NewButton("Finger [R15]", "Ass - Q/E | Mouth - R/T", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/Script-Fixes/main/Finger%20Script"))()
+end)
+Section:NewButton("Ultimate Fling [R6/R15]", "Turns your character into a fling block.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Ultimate%20Fling"))()
+end)
+Section:NewButton("Fake Chat", "Lets you impersonate someone else.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Fake%20Chat"))()
+end)
+Section:NewButton("Titan [R15]", "Makes your character tall.", function()
+    local LocalPlayer = game:GetService("Players").LocalPlayer
+local Character = LocalPlayer.Character
+local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+
+function rm()
+	for i,v in pairs(Character:GetDescendants()) do
+		if v:IsA("BasePart") then
+			if v.Name == "Handle" or v.Name == "Head" then
+				if Character.Head:FindFirstChild("OriginalSize") then
+					Character.Head.OriginalSize:Destroy()
+				end
+			else
+				for i,cav in pairs(v:GetDescendants()) do
+					if cav:IsA("Attachment") then
+						if cav:FindFirstChild("OriginalPosition") then
+							cav.OriginalPosition:Destroy()  
+						end
+					end
+				end
+				v:FindFirstChild("OriginalSize"):Destroy()
+				if v:FindFirstChild("AvatarPartScaleType") then
+					v:FindFirstChild("AvatarPartScaleType"):Destroy()
+				end
+			end
+		end
+	end
+end
+
+rm()
+wait(0.5)
+Humanoid:FindFirstChild("BodyProportionScale"):Destroy()
+wait(1)
+
+rm()
+wait(0.5)
+Humanoid:FindFirstChild("BodyHeightScale"):Destroy()
+wait(1)
+
+rm()
+wait(0.5)
+Humanoid:FindFirstChild("BodyWidthScale"):Destroy()
+wait(1)
+
+rm()
+wait(0.5)
+Humanoid:FindFirstChild("BodyDepthScale"):Destroy()
+wait(1)
+
+rm()
+wait(0.5)
+Humanoid:FindFirstChild("HeadScale"):Destroy()
+wait(1)
+end)
+Section:NewButton("Chair", "Turns your character into a chair.", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/uN6c86e1"))()
+end)
+Section:NewButton("Table", "Turns your character into a table.", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/9kDrHnUd"))()
+end)
+Section:NewButton("Triangle", "Turns your character into a triangle.", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/47FxhPef"))()
+end)
+Section:NewButton("Marble", "Makes your character roll.", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/EJskzezp"))()
+end)
+Section:NewButton("Hold Hats", "Makes your character hold its hats.", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/exBkZqq4"))()
+end)
+Section:NewButton("Telekinesis", "Gives your character telekinesis.", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/KduE9A6z"))()
+end)
+Section:NewButton("Ragdoll Suicide", "Makes your character commit suicide and ragdoll.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Ragdoll%20Suicide"))()
+end)
+Section:NewButton("Butterloaf Cannon", "Only works in Life in Paradise and Adopt and Raise", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Butterloaf%20Cannon"))()
+end)
+Section:NewButton("Chat Remover", "Doesn't work on KRNL/", function()
+    while true do
+    wait(2.15)
+local args = {
+    [1] = " ",
+    [2] = "All"
+}
+game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end
+end)
+Section:NewButton("Head Pet", "Make your head follow people.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Head%20Pet"))()
+end)
+Section:NewButton("Walk on walls", "Lets your character walk on walls.", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/zXk4Rq2r"))()
+end)
+Section:NewButton("Autoclicker", "Gives you an autoclicker.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Autoclicker"))()
+end)
+Section:NewButton("Creeper", "Turns your character into a creeper.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+game.Players.LocalPlayer.Character.Head.Mesh:destroy()
+	function doo(limb, pos)
+		limb:BreakJoints()
+		local velocity = Instance.new("RocketPropulsion", limb)
+		velocity.CartoonFactor = 0
+		velocity.MaxSpeed = 30
+		velocity.MaxThrust = 9999
+		velocity.MaxTorque = Vector3.new(math.huge,math.huge,math.huge)
+		velocity.Target = game.Players.LocalPlayer.Character.Torso
+		velocity.TargetOffset = pos
+		velocity:fire()
+		local b = Instance.new("BodyGyro", limb)
+	end
+	while wait() do
+		doo(game.Players.LocalPlayer.Character["Left Arm"], Vector3.new(-0.5,-2,-1))
+		doo(game.Players.LocalPlayer.Character["Right Arm"], Vector3.new(0.5,-2,-1))
+		doo(game.Players.LocalPlayer.Character["Left Leg"], Vector3.new(-0.5,-2,1))
+		doo(game.Players.LocalPlayer.Character["Right Leg"], Vector3.new(0.5,-2,1))
+	end
+end)
+Section:NewButton("Unrestricted F3X", "If a game has F3X this will let you select any part.", function()
+    local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+
+mouse.KeyDown:connect(function(key)
+    key = string.lower(key)
+
+	if key == "p" then
+		for item = 1, 4 do
+			HopperBin = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+			HopperBin.BinType = item
+		end
+	elseif key == "l" then
+		function UnlockWorkspace(a)
+			for n,part in pairs(a:GetChildren()) do
+				if(part:IsA("BasePart")) then 
+					part.Locked = false 
+				end
+				UnlockWorkspace(part)
+			end
+		end
+		UnlockWorkspace(workspace)
+	elseif key == "k" then
+		local StarterGui = game:GetService("StarterGui")
+		StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
+	end
+end)
+end)
+Section:NewButton("Spider", "Makes your character a spider.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Spider"))()
+end)
+Section:NewButton("Control NPC", "LCtrl Click NPC - Control | Quote - Uncontrol", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Control%20NPC"))()
+end)
+Section:NewButton("ESP", "Lets you see every player.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/TheNuggetEater05/ekaMiffutSmodnaR/main/GlobalR6SkeletonESP.lua"))()
+
+shared.BoneESP_Settings = {
+    Circle_Visible = false,
+    Circle_Radius = 3,
+    BoneESP_Color = Color3.fromRGB(255,255,255)
+}
+end)
+Section:NewButton("Chat Bot", "Makes your character respond to people automatically.", function()
+    local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+
+_G.Owner = ""
+
+function getChat(message,plrname)
+
+   local Split = message:gsub(" ", "+") -- This takes spaces within the person's message and turns it into for ex: Hi+How+Are+You... to ensure that there are no errors and to also make the URL work
+
+   local Response = game:HttpGet("https://api.affiliateplus.xyz/api/chatbot?message=" .. Split .. "&botname=" .. plrname .. "&ownername=" .. _G.Owner .. "&user=1")
+   local Data = HttpService:JSONDecode(Response)
+   wait(1)
+   game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Data.message, "All")
+end
+
+Players.PlayerChatted:Connect(function(type, plr, message)
+   if plr.Name ~= Players.LocalPlayer.Name then
+       getChat(message, plr.Name)
+   end
+end)
+end)
+Section:NewButton("Instakill", "Skid", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Instakill'))()
+end)
+local Tab = Window:NewTab("Animations")
+local Section = Tab:NewSection("Animations")
+Section:NewButton("Gale Fighter", "Makes your character a fighter.", function()
+    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Tescalus/Evolution-Hub/main/Gale%20Fighter.lua"))()
+end)
+Section:NewButton("Ender", "Makes your character smash.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Ender"))()
+end)
+Section:NewButton("Memeus", "Makes your character a meme.", function()
+    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Tescalus/Evolution-Hub/main/Memeus.lua"))()
+end)
+Section:NewButton("Sonic", "Makes your character gotta go fast.", function()
+    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Sonic"))()
+end)
+Section:NewButton("Xester", "Makes your character a jester.", function()
+    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Tescalus/Evolution-Hub/main/FEXESTERFINALLY!!!!!!!.lua"))()
+end)
+Section:NewButton("Joy", "Makes your character full of joy.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGetAsync("https://pastebin.com/raw/0B76TD7N"))()
+end)
+Section:NewButton("Chill", "Makes your character chill af.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Tescalus/Evolution-Hub/main/FEChill.lua"))()
+end)
+Section:NewButton("Take the L", "Makes your character toxic.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGet("https://pastebin.com/raw/VkWkuyzc"))()
+end)
+Section:NewButton("Default Dance", "Makes you into a Fortnite character.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGet("https://pastebin.com/raw/iXAe7Fub"))()
+end)
+Section:NewButton("Floss", "Makes your character's teeth clean.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGet("https://pastebin.com/raw/JfyvWHLf"))()
+end)
+Section:NewButton("Orange Justice", "Makes your character avenge oranges.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGet("https://pastebin.com/raw/Efg0DgkP"))()
+end)
+Section:NewButton("Goopie Dance", "Makes your character do a goopie dance.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGet("https://pastebin.com/raw/fKLm580i"))()
+end)
+Section:NewButton("Boogie Down", "Makes your character boogie down.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGet("https://pastebin.com/raw/6DzXfYzy"))()
+end)
+Section:NewButton("Flips", "Frontflip - Z | Backflip - X | AirJump - C", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/crPcd0vq"))()
+end)
+Section:NewButton("Retard Dance", "Makes your character retarded.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGet("https://pastebin.com/raw/5ddwJ7tP"))()
+end)
+Section:NewButton("Pog Dance", "Makes your character poggers.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Pog%20Dance"))()
+end)
+Section:NewButton("Meme Animations", "Gives your character meme animations.", function()
+    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Tescalus/Evolution-Hub/main/memeanimations.lua"))()
+end)
+Section:NewButton("Caducus", "Makes your character edgy.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Cadacus"))()
+end)
+Section:NewButton("Krystal Dance V2", "Gives your character more meme animations.", function()
+    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Tescalus/Pendulum-Hubs-Source/main/Krystal%20Dance.lua"))()
+end)
+Section:NewButton("Smug Dance", "Makes your character smug.", function()
+    loadstring(game:HttpGetAsync("https://pastebin.com/raw/ZuKy7HFF"))()
+end)
+Section:NewButton("Distraction Dance", "Makes your character distracting.", function()
+    loadstring(game:HttpGetAsync("https://pastebin.com/raw/2tJBN38N"))()
+end)
+Section:NewButton("Kazotsky Kick", "Makes your character russian.", function()
+    loadstring(game:HttpGetAsync("https://pastebin.com/raw/1P37qYeV"))()
+end)
+local Tab = Window:NewTab("Hat Scripts")
+local Section = Tab:NewSection("Hat Scripts")
+Section:NewButton("Long Legs", "Gives your character long legs.", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Long%20Legs"))()
+end)
+Section:NewButton("Hoverboard", "Gives your character a hoverboard.", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/xSNp0dKd"))()
+end)
+Section:NewButton("Amogus", "Makes your character sussy.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Amogus"))()
+end)
+Section:NewButton("SCP-096", "Makes your character shy.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/SCP-096"))()
+end)
+Section:NewButton("Dog", "What da dog doin?", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Dog"))()
+end)
+Section:NewButton("Bag", "Gives your character a bag.", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/GL0TnDix"))()
+end)
+Section:NewButton("Star Glitcher", "Makes your character a star glitcher.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Star%20Glitcher"))()
+end)
+Section:NewButton("Hat Orbit", "Makes your hats orbit around your character.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Net%20Bypass"))()
+loadstring(game:HttpGet("https://pastebin.com/raw/4B4fktPS", true))()
+end)
+Section:NewButton("Dark Creature", "Makes your character a creature.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/reanimflin.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/longarms.lua'))()
+end)
+Section:NewButton("Creepy Arms", "Gives your character creepy arms.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/reanimflin.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/thtdght.lua'))()
+end)
+Section:NewButton("Nebula Scythe", "Gives your character a scythe.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/reanimflin.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/hvh.lua'))()
+end)
+Section:NewButton("Nebula Sword", "Gives your character a nebula sword.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/reanimflin.lua'))()
+loadstring(game:HttpGet('https://pastebin.com/raw/hNXaEUDP'))()
+end)
+Section:NewButton("Assassin", "Gives your character a sword.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/reanimflin.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/yelowsword.lua'))()
+end)
+Section:NewButton("Zen", "Gives your character floating cubes.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/buletreanim.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/orbs.lua'))()
+end)
+Section:NewButton("World Spinner", "Gives your character a wheel.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/reanimflin.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/swang.lua'))()
+end)
+Section:NewButton("Neptunian Switcher", "Gives your character different modes of Neptunian.", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/U5wUedGH"))()
+end)
+Section:NewButton("Soldier AI", "Gives your character a soldier.", function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/EURiWBBn'))()
+end)
+Section:NewButton("Ball", "Works with any 6 hats or hairs.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Soccer'))()
+end)
+Section:NewButton("Drone", "B - Use | Q/E - Turn | R/F - Height | T- Stay | G - Gun", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/buletreanim.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/creghs.lua'))()
+end)
+Section:NewButton("Book", "Makes your character read.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Book%20Script'))()
+end)
+Section:NewButton("Fallen Anger", "Makes your character american.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Fallen%20Anger'))()
+end)
+Section:NewButton("Spinning Shard", "Spinning shart.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/buletreanim.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/hussb.lua'))()
+end)
+local Tab = Window:NewTab("Hubs")
+local Section = Tab:NewSection("Hubs")
+Section:NewButton("Hat Hub", "Free version.", function()
+    loadstring(game:HttpGet("https://textbin.net/raw/vxrnz4q6p2"))()
+end)
+Section:NewButton("Mech Hub", "Hub about robotic scripts.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Mech%20Hub"))()
+end)
+Section:NewButton("Unknown Hub", "Key - UpdatedV2.5", function()
+   loadstring(game:HttpGet("https://paste.ee/r/Qf17k",true))()
+end)
+Section:NewButton("Cheems-Ware", "Decent hub.", function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/XeneonPlays/Cheems-Ware/main/source.lua"))()
+end)
+Section:NewButton("Spookyware", "Also decent hub.", function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Spookyware"))()
+end)
+local Tab = Window:NewTab("Serverside")
+local Section = Tab:NewSection("Serverside")
+Section:NewButton("Backdoor Checker", "Checks if there is a backdoor in the game running.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/iK4oS/backdoor.exe/master/source.lua"))()
+end)
+local Tab = Window:NewTab("Admin")
+local Section = Tab:NewSection("Admin")
+Section:NewButton("CMD-X", "651 commands.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source", true))()
+end)
+Section:NewButton("Infinite Yield", "Most well known admin script.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+Section:NewButton("Shattervast", "Old admin script, still packs a punch.", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Shattervast'))()
+end)
+Section:NewButton("Fate's Admin", "Said to be the best admin script by some.", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/fatesc/fates-admin/main/main.lua"))();
+end)
+Section:NewButton("Homebrew Admin", "Unique admin script.", function()
+    loadstring(game:HttpGet(('https://raw.githubusercontent.com/mgamingpro/HomebrewAdmin/master/Main'),true))()
+end)
+Section:NewButton("Reviz Admin", "Admin script.", function()
+    loadstring(game:HttpGet(('https://pastebin.com/raw/Caniwq2N'),true))()
+end)
