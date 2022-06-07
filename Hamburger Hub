@@ -259,7 +259,7 @@ end)
 Section:NewButton("Butterloaf Cannon", "Only works in Life in Paradise and Adopt and Raise", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Butterloaf%20Cannon"))()
 end)
-Section:NewButton("Chat Remover", "Doesn't work on KRNL/", function()
+Section:NewButton("Chat Remover", "Doesn't work on KRNL", function()
     while true do
     wait(2.15)
 local args = {
