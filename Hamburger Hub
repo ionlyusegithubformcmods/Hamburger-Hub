@@ -442,6 +442,16 @@ end)
 Section:NewButton("Creepy Crawler", "is that a spider?", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Creepy%20Crawler'))()
 end)
+Section:NewButton("Server Crasher", "Needs R15, might not work sometimes.", function()
+    for _,s in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+    if s:IsA("Motor6D") and s.Name ~= "Neck" then
+        local fard = s.Parent
+        s:Destroy()
+        fard.CFrame = CFrame.new(9e9 * _,9e9* _,9e9*_)
+        wait()
+    end
+end
+end)
 local Tab = Window:NewTab("Animations")
 local Section = Tab:NewSection("Animations")
 Section:NewButton("Ender", "Makes your character smash.", function()
