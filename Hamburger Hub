@@ -379,6 +379,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(Key,F)
        end
    end
 end)
+end)
 Section:NewButton("Chat Translator", "Translates chat and can auto-translate your text to different languages.", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Chat%20Translator'))()
 end)
