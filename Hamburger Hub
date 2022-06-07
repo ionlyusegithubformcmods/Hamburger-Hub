@@ -233,58 +233,7 @@ Section:NewButton("Fake Chat", "Lets you impersonate someone else.", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Fake%20Chat"))()
 end)
 Section:NewButton("Titan [R15]", "Makes your character tall.", function()
-    local LocalPlayer = game:GetService("Players").LocalPlayer
-local Character = LocalPlayer.Character
-local Humanoid = Character:FindFirstChildOfClass("Humanoid")
-
-function rm()
-	for i,v in pairs(Character:GetDescendants()) do
-		if v:IsA("BasePart") then
-			if v.Name == "Handle" or v.Name == "Head" then
-				if Character.Head:FindFirstChild("OriginalSize") then
-					Character.Head.OriginalSize:Destroy()
-				end
-			else
-				for i,cav in pairs(v:GetDescendants()) do
-					if cav:IsA("Attachment") then
-						if cav:FindFirstChild("OriginalPosition") then
-							cav.OriginalPosition:Destroy()  
-						end
-					end
-				end
-				v:FindFirstChild("OriginalSize"):Destroy()
-				if v:FindFirstChild("AvatarPartScaleType") then
-					v:FindFirstChild("AvatarPartScaleType"):Destroy()
-				end
-			end
-		end
-	end
-end
-
-rm()
-wait(0.5)
-Humanoid:FindFirstChild("BodyProportionScale"):Destroy()
-wait(1)
-
-rm()
-wait(0.5)
-Humanoid:FindFirstChild("BodyHeightScale"):Destroy()
-wait(1)
-
-rm()
-wait(0.5)
-Humanoid:FindFirstChild("BodyWidthScale"):Destroy()
-wait(1)
-
-rm()
-wait(0.5)
-Humanoid:FindFirstChild("BodyDepthScale"):Destroy()
-wait(1)
-
-rm()
-wait(0.5)
-Humanoid:FindFirstChild("HeadScale"):Destroy()
-wait(1)
+    loadstring(game:HttpGet("https://pastebin.com/raw/nSM6JfJc"))()
 end)
 Section:NewButton("Chair", "Turns your character into a chair.", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/uN6c86e1"))()
