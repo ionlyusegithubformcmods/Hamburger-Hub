@@ -428,7 +428,7 @@ end)
 Section:NewButton("Chat Translator", "Translates chat and can auto-translate your text to different languages.", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Chat%20Translator'))()
 end)
-Section:NewButton("Beacon", "Makes you infinitely tall.", function()
+Section:NewButton("Beacon", "Makes you infinitely tall. (Needs layered clothes)", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Beacon'))()
 end)
 Section:NewButton("Australian", "Makes you upside-down. (only shown on other's screens)", function()
@@ -440,7 +440,7 @@ end)
 Section:NewButton("Creepy Crawler", "is that a spider?", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Creepy%20Crawler'))()
 end)
-Section:NewButton("Server Crasher", "Needs R15, might not work sometimes.", function()
+Section:NewButton("Server Crasher", "Needs R15 and layered clothes, might fail.", function()
     for _,s in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
     if s:IsA("Motor6D") and s.Name ~= "Neck" then
         local fard = s.Parent
