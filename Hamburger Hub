@@ -584,7 +584,7 @@ Section:NewButton("Drone", "B - Use | Q/E - Turn | R/F - Height | T- Stay | G - 
     loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/buletreanim.lua'))()
 loadstring(game:HttpGet('https://raw.githubusercontent.com/dogi12/dogishub/main/creghs.lua'))()
 end)
-Section:NewButton("Book", "🤓", function()
+Section:NewButton("Book", ":nerd:", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Book%20Script'))()
 end)
 Section:NewButton("Fallen Anger", "Makes your character american.", function()
