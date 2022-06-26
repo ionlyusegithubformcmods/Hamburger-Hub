@@ -2,6 +2,7 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHept
 local Window = Library.CreateLib("Hamburger Hub - A collection of FE scripts that are free to use.", "Serpent")
 local Tab = Window:NewTab("Home")
 local Section = Tab:NewSection("Made by Guy that exists#1915")
+local Section = Tab:NewSection("u should click the 3 dots next to scripts for more info")
 Section:NewButton("Hats Needed", "Paste this in your browser for all of the hats.", function()
     setclipboard("https://sites.google.com/view/hamburger-hub-hats/homee")
 toclipboard("https://sites.google.com/view/hamburger-hub-hats/home")
