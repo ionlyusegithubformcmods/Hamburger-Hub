@@ -791,7 +791,7 @@ game:GetService("Players").LocalPlayer.Character["Pal Hair"].Handle:FindFirstChi
 game:GetService("Players").LocalPlayer.Character["Robloxclassicred"].Handle:FindFirstChildOfClass("SpecialMesh"):Destroy()
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Old%20Never%20Glitcher'),true))()
 end)
-Section:NewButton("Bruh Glitcher", "old version not as good as new one", function()
+Section:NewButton("Bruh Glitcher", "epic glitcher", function()
     game:GetService("Players").LocalPlayer.Character["LavanderHair"].Handle:FindFirstChildOfClass("SpecialMesh"):Destroy()
 game:GetService("Players").LocalPlayer.Character["Kate Hair"].Handle:FindFirstChildOfClass("SpecialMesh"):Destroy()
 game:GetService("Players").LocalPlayer.Character["Pink Hair"].Handle:FindFirstChildOfClass("SpecialMesh"):Destroy()
